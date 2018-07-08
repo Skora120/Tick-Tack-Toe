@@ -1,5 +1,9 @@
 import os
 
+#TODO
+#fix input
+#input validation
+
 init = False
 fields = {'8': ' ', '1': ' ', '6': ' ', '3': ' ', '5': ' ', '7': ' ', '4': ' ', '9': ' ', '2': ' '}
 player1 = None
@@ -15,24 +19,9 @@ def check_for_win():
     score_first_col = 0
     score_second_col = 0
     score_third_col = 0
+    score_first_diagonal = 0
+    score_second_diagonal = 0
     current_item = 1
-
-    #TODO implement into for
-    # diagonally win check
-    # if fields['5'] is not None and fields['8'] == fields['5'] == fields['2']:
-    #     if fields['8'] == player1:
-    #         print("Player1 has won!")
-    #         return 1
-    #     else:
-    #         print("Player2 has won!")
-    #         return 1
-    # elif fields['5'] is not None and fields['4'] == fields['5'] == fields['6']:
-    #     if fields['8'] == player1:
-    #         print("Player1 has won!")
-    #         return 1
-    #     else:
-    #         print("Player2 has won!")
-    #         return 1
 
     for value in fields.items():
         # row win check
@@ -42,12 +31,36 @@ def check_for_win():
         elif value[1] == player2:
             score_row -= int(value[0])
 
-        if score_row == 15:
+        if 15 in (score_row, score_first_col, score_second_col, score_third_col, score_first_diagonal, score_second_diagonal):
             print("Player1 has won!")
             return 1
-        elif score_row == -15:
+        elif -15 in (score_row, score_first_col, score_second_col, score_third_col, score_first_diagonal, score_second_diagonal):
             print("Player2 has won!")
             return 1
+
+        # for diagonal check
+        if int(value[0]) == 8 or int(value[0]) == 2:
+            if value[1] == player1:
+                score_first_diagonal += int(value[0])
+            elif value[1] == player2:
+                score_first_diagonal -= int(value[0])
+
+        elif int(value[0]) == 6 or int(value[0]) == 4:
+            if value[1] == player1:
+                score_second_diagonal += int(value[0])
+            elif value[1] == player2:
+                score_second_diagonal -= int(value[0])
+
+        if int(value[0]) == 5:
+            if value[1] == player1:
+                score_first_diagonal += int(value[0])
+                score_second_diagonal += int(value[0])
+
+            elif value[1] == player2:
+                score_first_diagonal -= int(value[0])
+                score_second_diagonal -= int(value[0])
+
+        print(score_first_diagonal, score_second_diagonal)
 
         if current_item % 3 == 0:
             # for row check
@@ -106,11 +119,11 @@ def update():
 def draw_board():
     global fields
     if init:
-        print("  {}  |  {}  |  {}  ".format(fields['4'], fields['9'], fields['2']))
+        print("  {}  |  {}  |  {}  ".format(fields['8'], fields['1'], fields['6']))
         print("------------------")
         print("  {}  |  {}  |  {}  ".format(fields['3'], fields['5'], fields['7']))
         print("------------------")
-        print("  {}  |  {}  |  {}  ".format(fields['8'], fields['1'], fields['6']))
+        print("  {}  |  {}  |  {}  ".format(fields['4'], fields['9'], fields['2']))
     else:
         print("    |    |    ")
         print("--------------")
@@ -138,7 +151,6 @@ def setup():
 
     draw_board()
     init = True
-
     update()
 
 
