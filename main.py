@@ -5,7 +5,7 @@ import os
 #input validation
 
 init = False
-fields = {'8': ' ', '1': ' ', '6': ' ', '3': ' ', '5': ' ', '7': ' ', '4': ' ', '9': ' ', '2': ' '}
+fields = {'4': ' ', '9': ' ', '2': ' ', '3': ' ', '5': ' ', '7': ' ', '8': ' ', '1': ' ', '6': ' '}
 player1 = None
 player2 = None
 
@@ -89,6 +89,13 @@ def check_for_win():
     return 0
 
 
+def restart():
+    global fields
+    fields = {'4': ' ', '9': ' ', '2': ' ', '3': ' ', '5': ' ', '7': ' ', '8': ' ', '1': ' ', '6': ' '}
+    draw_board()
+    update()
+
+
 def mark(arg):
     global fields
     field = int(input("{}: choose field: ".format(arg)))
@@ -112,9 +119,12 @@ def update():
             mark(player2)
             player1_turn = True
 
+        clear_screen()
         draw_board()
         number_of_moves += 1
 
+    if input("Do you wish to play again? Type 'Y'").lower() == "y":
+        restart()
 
 def draw_board():
     global fields
