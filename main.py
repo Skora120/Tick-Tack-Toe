@@ -1,9 +1,5 @@
 import os
 
-#TODO
-#fix input
-#input validation
-
 init = False
 fields = {'4': ' ', '9': ' ', '2': ' ', '3': ' ', '5': ' ', '7': ' ', '8': ' ', '1': ' ', '6': ' '}
 player1 = None
@@ -11,16 +7,10 @@ player2 = None
 
 
 def clear_screen():
-    os.system('cls')
+    os.system('cls' if os.name == 'nt' else 'clear')
 
 
 def check_for_win():
-    # score_row = 0
-    # score_first_col = 0
-    # score_second_col = 0
-    # score_third_col = 0
-    # score_first_diagonal = 0
-    # score_second_diagonal = 0
     score = {'row': 0, 'col_first': 0, 'col_second': 0, 'col_third': 0, 'diagonal_first': 0, 'diagonal_second': 0}
     current_item = 1
 
@@ -87,21 +77,26 @@ def check_for_win():
                 score['col_third'] -= int(value[0])
 
         current_item += 1
-    
+
     return 0
 
 
 def restart():
     global fields
     fields = {'4': ' ', '9': ' ', '2': ' ', '3': ' ', '5': ' ', '7': ' ', '8': ' ', '1': ' ', '6': ' '}
+    clear_screen()
     draw_board()
     update()
 
 
 def mark(arg):
     global fields
-    field = int(input("{}: choose field: ".format(arg)))
-    fields[list(fields.keys())[abs(field-1)]] = arg
+    while True:
+        field = input("{}: choose field: ".format(arg))
+
+        if ord(field[0]) in range(49, 58) and fields[list(fields.keys())[abs(int(field[0]) - 1)]] == ' ':
+            fields[list(fields.keys())[abs(int(field[0]) - 1)]] = arg
+            break
 
 
 def update():
@@ -109,7 +104,6 @@ def update():
     # check for win / draw move
     number_of_moves = 0
     player1_turn = True
-    print("test")
     while not check_for_win():
         if number_of_moves >= 9:
             print("Draw")
@@ -125,8 +119,9 @@ def update():
         draw_board()
         number_of_moves += 1
 
-    if input("Do you wish to play again? Type 'Y'").lower() == "y":
+    if input("Do you wish to play again? Type 'Y': ").lower() == "y":
         restart()
+
 
 def draw_board():
     global fields
@@ -158,7 +153,7 @@ def setup():
 
     print("You have choose: {}".format(player1))
 
-    print("Fields on board respond to numpad keys")
+    print("Fields on board respond to NumPad keys")
     input("Press any key to start!")
 
     draw_board()
