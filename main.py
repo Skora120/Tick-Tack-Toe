@@ -15,77 +15,79 @@ def clear_screen():
 
 
 def check_for_win():
-    score_row = 0
-    score_first_col = 0
-    score_second_col = 0
-    score_third_col = 0
-    score_first_diagonal = 0
-    score_second_diagonal = 0
+    # score_row = 0
+    # score_first_col = 0
+    # score_second_col = 0
+    # score_third_col = 0
+    # score_first_diagonal = 0
+    # score_second_diagonal = 0
+    score = {'row': 0, 'col_first': 0, 'col_second': 0, 'col_third': 0, 'diagonal_first': 0, 'diagonal_second': 0}
     current_item = 1
 
     for value in fields.items():
         # row win check
         if value[1] == player1:
-            score_row += int(value[0])
+            score['row'] += int(value[0])
 
         elif value[1] == player2:
-            score_row -= int(value[0])
-
-        if 15 in (score_row, score_first_col, score_second_col, score_third_col, score_first_diagonal, score_second_diagonal):
-            print("Player1 has won!")
-            return 1
-        elif -15 in (score_row, score_first_col, score_second_col, score_third_col, score_first_diagonal, score_second_diagonal):
-            print("Player2 has won!")
-            return 1
+            score['row'] -= int(value[0])
 
         # for diagonal check
         if int(value[0]) == 8 or int(value[0]) == 2:
             if value[1] == player1:
-                score_first_diagonal += int(value[0])
+                score['diagonal_first'] += int(value[0])
             elif value[1] == player2:
-                score_first_diagonal -= int(value[0])
+                score['diagonal_first'] -= int(value[0])
 
         elif int(value[0]) == 6 or int(value[0]) == 4:
             if value[1] == player1:
-                score_second_diagonal += int(value[0])
+                score['diagonal_second'] += int(value[0])
             elif value[1] == player2:
-                score_second_diagonal -= int(value[0])
+                score['diagonal_second'] -= int(value[0])
 
         if int(value[0]) == 5:
             if value[1] == player1:
-                score_first_diagonal += int(value[0])
-                score_second_diagonal += int(value[0])
+                score['diagonal_first'] += int(value[0])
+                score['diagonal_second'] += int(value[0])
 
             elif value[1] == player2:
-                score_first_diagonal -= int(value[0])
-                score_second_diagonal -= int(value[0])
+                score['diagonal_first'] -= int(value[0])
+                score['diagonal_second'] -= int(value[0])
 
-        print(score_first_diagonal, score_second_diagonal)
+        # print(score)
+
+        for scr in score.values():
+            if scr == 15:
+                print("Player1 has won!")
+                return 1
+            elif scr == -15:
+                print("Player2 has won!")
+                return 1
 
         if current_item % 3 == 0:
             # for row check
-            score_row = 0
+            score['row'] = 0
             # for col 1 check
             if value[1] == player1:
-                score_first_col += int(value[0])
+                score['col_first'] += int(value[0])
 
             elif value[1] == player2:
-                score_first_col -= int(value[0])
+                score['col_first'] -= int(value[0])
         elif current_item % 3 == 1:
             if value[1] == player1:
-                score_second_col += int(value[0])
+                score['col_second'] += int(value[0])
 
             elif value[1] == player2:
-                score_second_col -= int(value[0])
+                score['col_second'] -= int(value[0])
         else:
             if value[1] == player1:
-                score_third_col += int(value[0])
+                score['col_third'] += int(value[0])
 
             elif value[1] == player2:
-                score_third_col -= int(value[0])
+                score['col_third'] -= int(value[0])
 
         current_item += 1
-
+    
     return 0
 
 
